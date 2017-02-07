@@ -1,51 +1,92 @@
 <?php
-class BaseController
+
+interface Controller
 {
-  private $controller;
-  protected $action;
-  protected $params;
-  protected $avaibleActions;
-  protected $model;
-
-  public function __construct()
-  {
-    $this->action;
-    $this->params = array();
-    $this->avaibleActions = array('index');
-  }
-
-  public function parseUrl($url)
-  {
-    //echo("Base parseUrl<br />");
-
-    $urlSpl = explode('/', $url);
-
-    //var_dump($urlSpl);
-    $this->controller = mb_strtolower($urlSpl[1] ?? 'index');
-
-    $this->action = mb_strtolower($urlSpl[1] ?? $this->avaibleActions[0]);
-
-    if (!in_array($this->action, $this->avaibleActions))
-     $this->action = $this->avaibleActions[0];	
-
-   //echo ('<br />');
-   //echo ('action = ' . $this->action . '<br />');
-
-   if (count($urlSpl) < 3)
-    return;
-  echo(count($urlSpl));
+    public function parseUrl($url);
+    public function work();
 
 }
-public function do()
+
+class BaseController implements Controller
 {
-  //echo('./model/' . $this->controller.  '/' . $this->action . 'Model.php');
-  require_once './model/' . $this->controller .  '/' . $this->action . 'Model.php';
-  $modelClassName = $this->action . 'Model';
-  $this->model = new $modelClassName;
-  require_once './view/header.php';
-  require_once './view/' . $this->controller.  'View.php';
-  require_once './view/footer.php';
+    protected $__controller;
+    protected $__action;
+    protected $__params;
+    protected $__availableActions;
+    protected $__model;
+    protected $__title;
+
+    /**
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->__controller;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAction()
+    {
+        return $this->__action;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParams()
+    {
+        return $this->__params;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailableActions()
+    {
+        return $this->__availableActions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModel()
+    {
+        return $this->__model;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->__title;
+    }
+
+
+    public function parseUrl($url)
+    {
+        $urlSpl = explode('/', $url);
+
+        $this->__controller = mb_strtolower($urlSpl[0] ?? 'index');
+
+        $this->__action = mb_strtolower($urlSpl[1] ?? $this->__availableActions[0]);
+
+        if (!in_array($this->__action, $this->__availableActions))
+            $this->__action = $this->__availableActions[0];
+
+        if (count($urlSpl) < 3)
+            return;
+        echo(count($urlSpl));
+    }
+
+    public function work()
+    {
+        //var_dump('./model/' . $this->controller . '/' . $this->action . 'Model.php');
+        require_once './model/' . $this->__controller . 'Model.php';
+        $modelClassName = $this->__controller . 'Model';
+        $this->__model = new $modelClassName;
+    }
 
 }
-}
-?>

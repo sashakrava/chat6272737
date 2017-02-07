@@ -1,11 +1,8 @@
-<?php
-echo
-'<!DOCTYPE html>'.
-'<html>'.
-'<head>'.
-	'<title>' . $this->model->getTitle() .'</title>'.
-	'<link rel="stylesheet" href="../resource/style.css">'.
-	'<script type="text/javascript" src="./view/js/' . $this->controller . '.js"></script>'.
-'</head>'.
-'<body>';
-?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?php echo $this->__model->getTitle() ?></title>
+    <script type="text/javascript" src="./view/js/global.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="./resource/style.css"/>
+</head>

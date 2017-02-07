@@ -1,16 +1,15 @@
 <?php
-  class BaseModel
-  {
+class BaseModel
+{
 
-   public function __construct()
-   {
+    public function __construct()
+    {
 
-   }
-   
-   public function getTitle()
-   {
-   		return "titleTestBaseModel";
-   }
-   
-  }
-?>
+    }
+
+    public function getTitle()
+    {
+        return "titleTestBaseModel";
+    }
+
+}
