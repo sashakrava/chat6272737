@@ -11,6 +11,9 @@ class IndexModel extends BaseModel
     public function __construct()
     {
         $this->__title = 'Chat';
+        $this->__userId = 0;
+        $this->__login = '';
+        $this->__date = 0;
 
     }
 
