@@ -1,11 +1,12 @@
 <body>
 <header>
-    <div>Чат</div>
-    <? if(1!=1); ?>
-    <div>test1</div>
-    <? endif; ?>
+    <div class="title"><h1>Чат</h1></div>
+    <?php if ($this->getModel()->getUserId() >  0): ?>
+        <div class="login">Логин: <?php echo($this->getModel()->getLogin()); else:?></div>
+        <div class="login"><a href="/auth">Войти</a></div>
+    <?php endif; ?>
 </header>
-<content>
+<content><br/><br/><br/>
     <div id="chat">
     </div>
     <div>

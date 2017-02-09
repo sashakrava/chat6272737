@@ -2,27 +2,23 @@
 require_once './model/baseModel.php';
 class AuthModel extends BaseModel
 {
-    private $__id;
-    private $__token;
+    protected $__token;
 
-    public function __construct()
-    {
-
-    }
-
-    public function getTitle()
-    {
-        return "Authorization";
-    }
-
-    public function getToken()
+    /**
+     * @return string
+     */
+    public function getToken(): string
     {
         return $this->__token;
     }
 
-    public function getUserId()
+    public function __construct()
     {
-        return $this->__id;
+        $this->__title = 'Auth';
+        $this->__userId = 0;
+        $this->__login = '';
+        $this->__date = 0;
+        $this->__token = '';
     }
 
     public function auth($login, $password)
@@ -30,21 +26,22 @@ class AuthModel extends BaseModel
         $login = trim(htmlspecialchars(stripslashes($login)));
         $password = trim(htmlspecialchars(stripslashes($password)));
 
-        $query = 'SELECT id, date FROM users WHERE '.
-            'users.login = "' . mysqli_real_escape_string(Core::getMysqli(), $login) . '" and ' .
-            'users.password = "' . mysqli_real_escape_string(Core::getMysqli(), $password) . '"';
-//        var_dump($query);
+        $query = 'SELECT * FROM users WHERE '.
+            'login = "' . mysqli_real_escape_string(Core::getMysqli(), $login) . '" and ' .
+            'password = "' . mysqli_real_escape_string(Core::getMysqli(), $password) . '"';
+
+        //var_dump($query);
         if ($result = Core::getMysqli()->query($query))
         {
             if (mysqli_num_rows($result) > 0)
             {
                 $resultInfo = mysqli_fetch_assoc($result);
-                self::$__id = $resultInfo['id'];
+                $this->__userId = $resultInfo['id'];
                 $tokenTime = time();
                 $this->__token = md5($login . $tokenTime);
-                if ($this->__id > 0)
+                if ($this->__userId > 0)
                 {
-                    $query = 'UPDATE users SET token="' . self::$__token . '", token_time="' . $tokenTime .'" WHERE id=' . self::$__id;
+                    $query = 'UPDATE users SET token="' . $this->__token . '", token_time="' . $tokenTime .'" WHERE id=' . $this->__userId;
                     return Core::getMysqli()->query($query);
                 }
             }

@@ -3,6 +3,7 @@
  */
 
 var lastTime = 0;
+var isWait = false;
 
 $(document).ready(
     function()
@@ -10,8 +11,24 @@ $(document).ready(
         console.log('ready');
         $('#sendMessageForm').submit(sendMessage);
         showAllMessage();
+        setTimeout(updateChat, 500);
     }
 );
+
+function showMessages(messages)
+{
+    $.each(messages, function(i, messData) {
+        if (messData.date > lastTime)
+            lastTime = messData.date;
+        var date = new Date(messData.date*1000).toTimeString().split(' ')[0];
+        var msg = messData.login + '[' + date + ']:' + messData.text;
+        //console.log(msg);
+        $("<div/>", {
+            class: "msg",
+            text: msg
+        }).appendTo($('#chat'));
+    });
+}
 
 function sendMessage()
 {
@@ -66,20 +83,11 @@ function showAllMessage()
             success:
                 function(result)
                 {
-                    //console.log(result);
-
-                    $.each(result, function(i, messData) {
-                        if (messData.date > lastTime)
-                            lastTime = messData.date;
-                        var date = new Date(messData.date*1000).toTimeString().split(' ')[0];
-                        var msg = messData.login + '[' + date + ']:' + messData.text;
-                        //console.log(msg);
-                        $("<div/>", {
-                            class: "msg",
-                            text: msg
-                        }).appendTo($('#chat'));
-                    });
-                    updateChat();
+                    console.log(result);
+                    if(result.length > 0)
+                    {
+                        showMessages(result);
+                    }
                 }
         }
     );
@@ -88,31 +96,22 @@ function showAllMessage()
 
 function updateChat()
 {
-    var isWait = false;
-    //console.log(lastTime);
-
-    /*
-
-     setInterval(
-     function()
-     {
-     if(!isWait)
-     {
-     isWait=true;
-     $.ajax(
-     {
-     type: "POST",
-     url: 'index/get',
-     data: {count: 'new'},
-     success: function (result)
-     {
-     isWait = false;
-     console.log(result);
-     }
-     }
-     );
-     }
-     },
-     500
-     );*/
+    console.log(lastTime);
+    $.ajax(
+        {
+            type: "POST",
+            url: 'index/get',
+            data: {count: 'new', lastTime: lastTime},
+            success: function (result)
+            {
+                // isWait = false;
+                console.log(result);
+                if(result.length > 0)
+                {
+                    showMessages(result);
+                    setTimeout(updateChat, 500);
+                }
+            }
+        }
+    );
 }

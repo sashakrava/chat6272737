@@ -4,7 +4,6 @@ interface Controller
 {
     public function parseUrl($url);
     public function work();
-
 }
 
 class BaseController implements Controller
@@ -64,6 +63,11 @@ class BaseController implements Controller
         return $this->__title;
     }
 
+    function __construct()
+    {
+
+    }
+
 
     public function parseUrl($url)
     {
@@ -87,6 +91,9 @@ class BaseController implements Controller
         require_once './model/' . $this->__controller . 'Model.php';
         $modelClassName = $this->__controller . 'Model';
         $this->__model = new $modelClassName;
+
+        if (isset($_COOKIE['id']) and isset($_COOKIE['token']))
+            $this->__model->userAuth($_COOKIE['id'], $_COOKIE['token']);
     }
 
 }

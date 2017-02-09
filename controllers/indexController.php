@@ -7,35 +7,38 @@ class IndexController extends BaseController
         $this->__availableActions = array('index', 'get', 'send');
     }
 
-    public function parseUrl($url)
-    {
-        //BaseTrait::parseUrl($url);
-        parent::parseUrl($url);
-        
-    }
-
     public function work()
     {
         parent::work();
-//        var_dump($_COOKIE);
-        if (isset($_COOKIE['id']) and isset($_COOKIE['token']))
+
+        switch ($this->__action)
         {
-//            echo('id : ' . $_COOKIE['id'] . '<br>');
-//            echo('token : ' . $_COOKIE['token'] . '<br>');
-            $this->__model->userAuth($_COOKIE['id'], $_COOKIE['token']);
-        }
-        switch ($this->__action) {
             case 'get':
                 header('Content-type: application/json');
                 $count = $_POST['count'] ?? 'all';
-                switch ($count) {
+                switch ($count)
+                {
                     case 'new':
+                        $lastTime = $_POST['lastTime'] ?? time();
 
+                        $res = false;
+
+                        while(!$res)
+                        {
+                            usleep(500);
+
+                            $res = $this->__model->getLastMess($lastTime);
+                            if ($res != false) {
+                                echo json_encode($res);
+                                break;
+                            }
+                        }
                         break;
                     default:
-                        echo json_encode($this->__model->getDataLast());
+                        echo json_encode($this->__model->getAllMess());
                 }
                 break;
+
             case 'send':
                 header('Content-type: application/json');
 
@@ -46,8 +49,7 @@ class IndexController extends BaseController
                         echo('{"code": "nomsg"}');
                         return;
                     }
-
-                    if ($this->__model->pasteMess($this->__model->getId(), $_POST['msg']))
+                    if ($this->__model->pasteMess($_POST['msg']))
                         echo ('{"code": "success"}');
                     else
                         echo ('{"code": "nopaste"}');

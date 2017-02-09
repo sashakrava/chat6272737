@@ -8,21 +8,21 @@
  */
 class Core
 {
-    static private $mysqliHandler;
+    static private $__mysqliHandler;
     static public function getMysqli()
     {
-        return self::$mysqliHandler;
+        return self::$__mysqliHandler;
     }
     static public function work()
     {
-        session_start();
+        self::$__mysqliHandler = mysqli_connect('localhost', 'root', '', 'test');
 
-        self::$mysqliHandler = mysqli_connect('localhost', 'root', '', 'test');
-
-        if (!self::$mysqliHandler) {
+        if (!self::$__mysqliHandler) {
             printf("Невозможно подключиться к базе данных. Код ошибки: %s\n", mysqli_connect_error());
             exit;
         }
+
+        self::$__mysqliHandler->set_charset('utf-8mb4');
 
         $url = $_GET['url'] ?? 'index';
 
@@ -35,6 +35,6 @@ class Core
         $controller->parseUrl($url);
         $controller->work();
 
-        mysqli_close(self::$mysqliHandler);
+        mysqli_close(self::$__mysqliHandler);
     }
 }

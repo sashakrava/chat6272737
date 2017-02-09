@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo $this->__model->getTitle() ?></title>
+    <title><?php echo $this->getModel()->getTitle() ?></title>
     <script type="text/javascript" src="./view/js/global.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="./view/js/jquery.js"></script>
     <link type="text/css" rel="stylesheet" href="./resource/style.css"/>
+    <meta charset="utf-8">
 </head>

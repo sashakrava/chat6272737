@@ -8,11 +8,6 @@ class AuthController extends BaseController
         $this->__availableActions = array('index', 'login');
     }
 
-    public function parseUrl($url)
-    {
-        parent::parseUrl($url);
-    }
-
     public function work()
     {
         parent::work();
@@ -20,15 +15,19 @@ class AuthController extends BaseController
         {
             case 'login':
                 header('Content-type: application/json');
-                if ($this->__model->auth($_POST['login'], $_POST['password']))
-                {
-                    setcookie("id", $this->__model->getId(), time() + 60 * 60 * 24 * 30, '/');
-                    setcookie("token", $this->__model->getToken(), time() + 60 * 60 * 24 * 30, '/');
+                if ($this->__model->getUserId() > 0)
                     echo ('{"code": "success"}');
-                }
                 else
-                    echo ('{"code": "nologin"}');
-
+                {
+                    if ($this->__model->auth($_POST['login'], $_POST['password']))
+                    {
+                        setcookie("id", $this->__model->getUserId(), time() + 60 * 60 * 24 * 30, '/');
+                        setcookie("token", $this->__model->getToken(), time() + 60 * 60 * 24 * 30, '/');
+                        echo ('{"code": "success"}');
+                    }
+                    else
+                        echo ('{"code": "nologin"}');
+                }
                 break;
 
             default:
