@@ -6,24 +6,12 @@
 
 body
 {
-    height: 100%;
-    width: 100%;
-    background: #cdeaff;
+    background: #cdeaf1;
 }
 
-.title
+.chat
 {
-    float: left;
-}
-
-.login
-{
-    float: right;
-}
-#chat
-{
-    background: #92aec3;
-    height: 100%;
+    background: #90aec3;
 }
 
 #sendMessageText

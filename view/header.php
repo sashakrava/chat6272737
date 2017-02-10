@@ -7,3 +7,8 @@
     <link type="text/css" rel="stylesheet" href="./resource/style.css"/>
     <meta charset="utf-8">
 </head>
+
+<body>
+
+<header>
+</header>

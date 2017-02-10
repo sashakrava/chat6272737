@@ -45,7 +45,7 @@ function auth()
                             alert('Логин или пароль неправильны.');
                             break;
                         case 'success':
-                            alert('Авторизация удалась.');
+                            //alert('Авторизация удалась.');
                             window.location.href = '/';
                             break;
                         default:

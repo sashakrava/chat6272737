@@ -5,7 +5,7 @@ class AuthController extends BaseController
 {
     public function __construct()
     {
-        $this->__availableActions = array('index', 'login');
+        $this->__availableActions = array('index', 'login', 'logout');
     }
 
     public function work()
@@ -28,6 +28,20 @@ class AuthController extends BaseController
                     else
                         echo ('{"code": "nologin"}');
                 }
+                break;
+
+            case 'logout':
+
+                if ($this->__model->getUserId() > 0)
+                {
+                    unset($_COOKIE['id']);
+                    unset($_COOKIE['token']);
+                    setcookie('id', '', time() - 3600, '/');
+                    setcookie('token', '', time() - 3600, '/');
+                }
+
+                header("Location: /");
+
                 break;
 
             default:

@@ -41,3 +41,12 @@ php_value mbstring.internal_encoding UTF-8
 php_value mbstring.http_output UTF-8
 php_value mbstring.encoding_translation On
 php_value mbstring.func_overload 6
+# Заголовок Cache-Control
+<IfModule mod_headers.c>
+        Header append Cache-Control "no-store, no-cache, must-revalidate"
+</IfModule>
+
+# Заголовок Expires
+<IfModule mod_expires.c>
+        ExpiresActive On ExpiresDefault "now"
+</IfModule>
